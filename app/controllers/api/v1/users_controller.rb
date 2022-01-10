@@ -18,6 +18,12 @@ class Api::V1::UsersController < ApplicationController
             render json: @user.errors, status: :unprocessable_entity 
         end
     end
+
+    # DELETE /users/:id
+    def destroy
+        @user = User.find(params[:id])
+        @user.destroy
+    end
   
     private
     def user_params
