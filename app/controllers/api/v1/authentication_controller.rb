@@ -10,10 +10,10 @@ class Api::V1::AuthenticationController < ApplicationController
                 token = create_token(payload)
                 render json: { token: token }
             else
-                render json: { message: "Authentication Failed" }
+                render json: { message: "Authentication Failed" }, status: :forbidden
             end
         else
-            render json: { message: "Could not find user" }
+            render json: { message: "Could not find user" }, status: :forbidden
         end
     end
 end
