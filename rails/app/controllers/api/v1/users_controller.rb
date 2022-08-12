@@ -6,6 +6,7 @@ class Api::V1::UsersController < ApplicationController
 		render json: User.all.to_json(:only => [:id, :email, :first_name, :last_name, :phone]), status: :ok
 	end
 
+	# GET /api/v1/users/:id
 	def show
 		@user = User.find(params[:id])
 		render json: @user.to_json(:only => [:id, :first_name, :last_name, :email, :phone]), status: :ok
@@ -29,6 +30,7 @@ class Api::V1::UsersController < ApplicationController
 		end
 	end
 
+	# PATCH /api/v1/users
 	def update
 		@user = User.find(params[:id])
 		if @user.update!(user_params)

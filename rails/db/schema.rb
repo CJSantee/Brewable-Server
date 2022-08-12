@@ -10,10 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_20_221116) do
+ActiveRecord::Schema.define(version: 2022_08_10_215156) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bags", force: :cascade do |t|
+    t.bigint "bean_id"
+    t.bigint "user_id"
+    t.string "roast_level"
+    t.date "roast_date"
+    t.integer "price"
+    t.decimal "weight"
+    t.string "weight_unit"
+    t.integer "rating"
+    t.string "photo_uri"
+    t.boolean "favorite"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["bean_id"], name: "index_bags_on_bean_id"
+    t.index ["user_id"], name: "index_bags_on_user_id"
+  end
+
+  create_table "beans", force: :cascade do |t|
+    t.string "name"
+    t.string "roaster"
+    t.string "origin"
+    t.string "flavor_notes"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email"

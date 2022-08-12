@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 			delete '/auth' => 'authentication#destroy'
 
 			resources :users, only: [:index, :show, :update, :create]
+			resources :beans, only: [:create]
+			resources :bags, only: [:create]
 		end
 	end
 
