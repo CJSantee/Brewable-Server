@@ -2,7 +2,12 @@ class ApplicationController < ActionController::API
 	include ::ActionController::Cookies
 	before_action :authenticate
 	before_action :set_cors
+	skip_before_action :authenticate, only: [:home]
 	
+	def home 
+		render json: { welcome: "Welcome to the Brewable API!" }, status: :success
+	end
+
 	def authenticate
 		token = cookies[:jwt]
 		if token 
