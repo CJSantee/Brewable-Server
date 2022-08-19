@@ -1,4 +1,13 @@
 class Api::V1::BeansController < ApplicationController
+
+	# GET /api/v1/beans
+	def index
+		@beans = Bean.all 
+		@beans = @beans.paginate(page: params[:page], per_page: limit)
+		render json: BeansRepresenter.new(@beans).as_json, status: :ok
+		set_pagination_headers(@beans)
+	end
+
 	# POST /api/v1/beans
 	def create
 		@bean = Bean.new(bean_params)

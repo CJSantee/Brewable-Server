@@ -3,9 +3,11 @@ class ApplicationController < ActionController::API
 	before_action :authenticate
 	before_action :set_cors
 	skip_before_action :authenticate, only: [:home]
-	
+
+	MAX_PAGINATION_LIMIT = 100
+
 	def home 
-		render json: { welcome: "Welcome to the Brewable API!" }, status: :success
+		render json: { welcome: "Welcome to the Brewable API!" }, status: :ok
 	end
 
 	def authenticate
@@ -35,5 +37,24 @@ class ApplicationController < ActionController::API
 		headers['Access-Control-Allow-Origin'] = ENV['CLIENT_URL']
 		headers['Access-Control-Request-Method'] = '*'
 	end
-	
+
+	def limit
+		[
+			params.fetch(:limit, MAX_PAGINATION_LIMIT).to_i,
+			MAX_PAGINATION_LIMIT
+		].min
+	end
+
+	def set_pagination_headers(object)
+		response.headers["X-Pagination"] = {
+			total: object.total_entries,
+			total_pages: object.total_pages,
+			first_page: object.current_page === 1,
+			last_page: object.next_page.blank?,
+			previous_page: object.previous_page,
+			next_page: object.next_page,
+			out_of_bounds: object.out_of_bounds?,
+			offset: object.offset
+		}.to_json
+	end
 end
