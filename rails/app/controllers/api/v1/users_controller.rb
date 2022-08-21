@@ -14,16 +14,19 @@ class Api::V1::UsersController < ApplicationController
 
 	# POST /api/v1/users
 	def create 
-		@user = User.new(user_params)
-		if @user.save
-			payload = { user_id: @user.id }
+		avatar = params[:user][:avatar]
+		params = user_params.except(:avatar)
+		user = User.new(params)
+		if user.save
+			user.avatar.attach(avatar) if avatar.present? && !!user
+			payload = { user_id: user.id }
 			token = create_token(payload)
 			cookies[:jwt] = {
 				value: token,
 				httponly: true,
 				expires: 1.hour.from_now
 			}
-			render json: { access_token: token, user: { user_id: @user.id, first_name: @user.first_name, last_name: @user.last_name }}, status: :created
+			render json: { access_token: token, user: { user_id: user.id, first_name: user.first_name, last_name: user.last_name, avatar_url: user.avatar_url }}, status: :created
 		else
 			# TODO: Return 409 (:conflict) for email / phone already in use
 			render json: @user.errors, status: :unprocessable_entity
@@ -42,6 +45,6 @@ class Api::V1::UsersController < ApplicationController
 
 	private
 	def user_params
-		params.require(:user).permit(:email, :phone, :password, :first_name, :last_name)
+		params.require(:user).permit(:email, :phone, :password, :first_name, :last_name, :avatar)
 	end
 end

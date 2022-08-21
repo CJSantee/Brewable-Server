@@ -26,3 +26,6 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 /config/set_env.rb
+
+# Ignore environment file
+.env
