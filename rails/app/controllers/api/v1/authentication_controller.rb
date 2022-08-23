@@ -13,7 +13,6 @@ class Api::V1::AuthenticationController < ApplicationController
 				cookies[:jwt] = {
 					value: token,
 					httpOnly: true,
-					expires: 1.hour.from_now
 				}
 				render json: { access_token: token, user: { user_id: @user.id, first_name: @user.first_name, last_name: @user.last_name }}
 			else

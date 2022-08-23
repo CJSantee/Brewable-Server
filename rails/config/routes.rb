@@ -13,9 +13,7 @@ Rails.application.routes.draw do
 			resources :bags, only: [:create]
 
 			get '/photos' => 'photos#show'
-			post 'presigned_url' => 'direct_upload#create'
-
+			post '/presigned_url' => 'uploads#create'
 		end
 	end
-
 end

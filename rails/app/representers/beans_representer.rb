@@ -13,11 +13,7 @@ class BeansRepresenter
 				roaster: bean.roaster,
 				origin: bean.origin,
 				flavor_notes: bean.flavor_notes,
-				photo_uri: bean.photo_uri,
-				image: {
-					data: Base64.encode64(get_photo(bean.photo_uri).read),
-					content_type: 'image/webp',
-				},
+				image: bean.image
 			}
 		end
 	end
