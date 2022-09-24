@@ -9,6 +9,7 @@ class BeansRepresenter
 		beans.map do |bean|
 			{
 				id: bean.id,
+				beans_uuid: bean.beans_uuid,
 				name: bean.name,
 				roaster: bean.roaster,
 				origin: bean.origin,

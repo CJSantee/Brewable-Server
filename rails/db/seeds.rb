@@ -14,6 +14,27 @@ Bean.create([
 		roaster: 'Metric',
 		origin: 'Ethiopia',
 		flavor_notes: '["Jasmine","Lemon","Watermelon Candy"]',
-		photo_uri: 'Metric%20Geta%20Bore.webp',
+		beans_uuid: SecureRandom.base64(10),
 	},
+	{
+		name: 'Tana Luwu',
+		roaster: 'Kwizera',
+		origin: 'Indonesia',
+		flavor_notes: '["Cherry Jam","Sweet Potato Pie"]',
+		beans_uuid: SecureRandom.base64(10),
+	},
+	{
+		name: 'Bella Vista',
+		roaster: 'MáQuina Coffee Roasters',
+		origin: 'Mexico',
+		flavor_notes: '["Caramel","Creamy","Brown Sugar"]',
+		beans_uuid: SecureRandom.base64(10),
+	},
+	{
+		name: 'San Fernando',
+		roaster: 'Wonderstate Coffee',
+		origin: 'Peru',
+		flavor_notes: '["Fudge","Citrus","Nougat"]',
+		beans_uuid: SecureRandom.base64(10),
+	}
 ])

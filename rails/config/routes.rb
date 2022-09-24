@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 			delete '/auth' => 'authentication#destroy'
 
 			resources :users, only: [:index, :show, :update, :create]
-			resources :beans, only: [:index, :create]
+			resources :beans, only: [:index, :show, :create]
 			resources :bags, only: [:create]
 
 			get '/photos' => 'photos#show'
