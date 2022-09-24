@@ -8,12 +8,14 @@ FactoryBot.define do
 		last_name { Faker::Name.last_name }
 		password { Faker::Internet.password(min_length: 8, max_length: 10) }
 	end
+
 	factory :bean do
 		name { Faker::Lorem.characters(number: 10) }
 		roaster 
 		origin
 		flavor_notes
 	end
+
 	factory :bag do 
 		bean { FactoryBot.build(:bean) }
 		user { FactoryBot.build(:user) }
@@ -26,4 +28,5 @@ FactoryBot.define do
 		photo_uri
 		favorite
 	end
+	
 end

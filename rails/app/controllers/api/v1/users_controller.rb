@@ -6,7 +6,6 @@ class Api::V1::UsersController < ApplicationController
 		users = User.all
 		users = users.paginate(page: params[:page], per_page: limit)
 		render json: UsersRepresenter.new(users).as_json, status: :ok
-		set_pagination_headers(@users)
 	end
 
 	# GET /api/v1/users/:id

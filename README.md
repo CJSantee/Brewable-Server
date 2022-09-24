@@ -1,0 +1,8 @@
+Environment Variables:
+
+- CLIENT_URL
+- AWS_ACCESS_KEY_ID
+- AWS_SECRET_ACCESS_KEY
+- S3_BUCKET
+- AWS_REGION
+- RETURN_AWS_URLS=true|false

@@ -46,6 +46,7 @@ class ApplicationController < ActionController::API
 	end
 
 	def set_pagination_headers(object)
+		puts object
 		response.headers["X-Pagination"] = {
 			total: object.total_entries,
 			total_pages: object.total_pages,
