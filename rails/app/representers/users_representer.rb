@@ -12,6 +12,8 @@ class UsersRepresenter
 				last_name: user.last_name,
 				email: user.email,
 				phone: user.phone,
+				followers_count: user.followers.count,
+				following_count: user.following.count,
 				image: user.image
 			}
 		end
