@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 			resources :users, only: [:index, :show, :update, :create] do 
 				post '/follow' => 'follows#follow'
 				get '/follows' => 'follows#counts'
+				get '/mutual' => 'follows#mutual'
 				get '/followers' => 'follows#followers'
 				get '/following' => 'follows#following'
 			end

@@ -21,6 +21,19 @@ RSpec.describe 'Api::V1::Follows', type: :request do
 
 			unique_followers = FactoryBot.create_list(:user, 15)
 			mutual_followers = FactoryBot.create_list(:user, 5)
+
+			unique_followers.each do |follower|
+				follower.given_follows.create!(followed_id: query_user.id)
+			end
+			mutual_followers.each do |follower|
+				follower.given_follows.create!(followed_id: query_user.id)
+				@user.given_follows.create!(followed_id: follower.id)
+			end
+
+			get "/api/v1/users/#{query_user.id}/mutual"
+
+			expect(response).to have_http_status(:success)
+			expect(JSON.parse(response.body).size).to eq(5)
 		end
 	end
 

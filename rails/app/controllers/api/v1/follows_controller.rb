@@ -34,9 +34,11 @@ class Api::V1::FollowsController < ApplicationController
 			@req_user.following.include?(follower)
 		end
 	
-		mutual = mutual.paginate(page: params[:page], per_page: limit)
+		# Can't paginate because not active record collection after above
+		# mutual = mutual.paginate(page: params[:page], per_page: limit) 
+
 		render json: UsersRepresenter.new(mutual).as_json, status: :ok
-		set_pagination_headers(mutual)
+		# set_pagination_headers(mutual)
 	end
 
 	# GET /api/v1/users/:id/followers
