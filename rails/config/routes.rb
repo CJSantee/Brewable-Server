@@ -8,7 +8,14 @@ Rails.application.routes.draw do
 			get '/refresh' => 'authentication#refresh'
 			delete '/auth' => 'authentication#destroy'
 
-			resources :users, only: [:index, :show, :update, :create]
+			resources :users, only: [:index, :show, :update, :create] do 
+				post '/follow' => 'follows#follow'
+				get '/follows' => 'follows#counts'
+				get '/mutual' => 'follows#mutual'
+				get '/followers' => 'follows#followers'
+				get '/following' => 'follows#following'
+			end
+
 			resources :beans, only: [:index, :show, :create]
 			resources :bags, only: [:create]
 

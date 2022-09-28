@@ -16,7 +16,7 @@ class ApplicationController < ActionController::API
 			begin
 				decoded = JWT.decode(token, secret)[0]
 				user_id = decoded["user_id"]
-				@user = User.find(user_id)
+				@req_user = User.find(user_id)
 			rescue => exception
 				render json: { message: "Error: #{exception}" }, status: :forbidden
 			end
@@ -46,7 +46,6 @@ class ApplicationController < ActionController::API
 	end
 
 	def set_pagination_headers(object)
-		puts object
 		response.headers["X-Pagination"] = {
 			total: object.total_entries,
 			total_pages: object.total_pages,

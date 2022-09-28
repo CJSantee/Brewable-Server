@@ -6,19 +6,13 @@ class Api::V1::UsersController < ApplicationController
 		users = User.all
 		users = users.paginate(page: params[:page], per_page: limit)
 		render json: UsersRepresenter.new(users).as_json, status: :ok
+		set_pagination_headers(users)
 	end
 
 	# GET /api/v1/users/:id
 	def show
 		user = User.find(params[:id])
-		render json: {
-			id: user.id,
-			first_name: user.first_name,
-			last_name: user.last_name,
-			email: user.email,
-			phone: user.phone,
-			image: user.image,
-		}, status: :ok
+		render json: UsersRepresenter.new([user]).as_json[0], status: :ok
 	end
 
 	# POST /api/v1/users
