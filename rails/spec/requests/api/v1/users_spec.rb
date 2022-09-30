@@ -42,6 +42,47 @@ RSpec.describe 'Api::V1::Users', type: :request do
 		end
 	end
 
+	describe 'GET /users?query=' do 
+		it 'returns users when searching for first_name' do 
+			user = FactoryBot.create(:user)
+
+			get "/api/v1/users?query=#{user.first_name}"
+
+			# Check response status
+			expect(response).to have_http_status(:success)
+			# Check response accuracy
+			expect(JSON.parse(response.body)[0]['id']).to eq(user.id)
+			# Check response attributes
+			expect(JSON.parse(response.body)[0]).to include('id', 'username', 'first_name', 'last_name', 'email', 'phone', 'followers_count', 'following_count', 'image')
+		end
+
+		it 'returns users when searching for last_name' do 
+			user = FactoryBot.create(:user)
+
+			get "/api/v1/users?query=#{user.last_name}"
+
+			# Check response status
+			expect(response).to have_http_status(:success)
+			# Check response accuracy
+			expect(JSON.parse(response.body)[0]['id']).to eq(user.id)
+			# Check response attributes
+			expect(JSON.parse(response.body)[0]).to include('id', 'username', 'first_name', 'last_name', 'email', 'phone', 'followers_count', 'following_count', 'image')
+		end
+
+		it 'returns users when searching for username' do 
+			user = FactoryBot.create(:user)
+
+			get "/api/v1/users?query=#{user.username}"
+
+			# Check response status
+			expect(response).to have_http_status(:success)
+			# Check response accuracy
+			expect(JSON.parse(response.body)[0]['id']).to eq(user.id)
+			# Check response attributes
+			expect(JSON.parse(response.body)[0]).to include('id', 'username', 'first_name', 'last_name', 'email', 'phone', 'followers_count', 'following_count', 'image')
+		end
+	end
+
 	describe 'POST /users' do 
 		it 'creates a new user' do 
 

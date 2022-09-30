@@ -2,6 +2,7 @@ FactoryBot.define do
 	Faker::Config.locale = 'en-US'
 
 	factory :user do 
+		username { Faker::Internet.username(specifier: 5..12) }
 		email { Faker::Internet.email }
 		phone { Faker::PhoneNumber.cell_phone_in_e164 }
 		first_name { Faker::Name.first_name }
