@@ -3,6 +3,7 @@ class Api::V1::UsersController < ApplicationController
 
 	# GET /api/v1/users
 	def index
+		return if !confirm_permission('users:get')
 		users = User.all
 		users = users.paginate(page: params[:page], per_page: limit)
 		render json: UsersRepresenter.new(users).as_json, status: :ok

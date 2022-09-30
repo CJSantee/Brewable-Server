@@ -7,7 +7,7 @@ class ApplicationController < ActionController::API
 	MAX_PAGINATION_LIMIT = 100
 
 	def home 
-		render json: { welcome: "Welcome to the Brewable API!" }, status: :ok
+		render json: { welcome: 'Welcome to the Brewable API!' }, status: :ok
 	end
 
 	def authenticate
@@ -21,7 +21,7 @@ class ApplicationController < ActionController::API
 				render json: { message: "Error: #{exception}" }, status: :forbidden
 			end
 		else
-			render json: { message: "Token cookie not found" }, status: :forbidden
+			render json: { message: 'Token cookie not found' }, status: :forbidden
 		end
 	end
 
@@ -46,7 +46,7 @@ class ApplicationController < ActionController::API
 	end
 
 	def set_pagination_headers(object)
-		response.headers["X-Pagination"] = {
+		response.headers['X-Pagination'] = {
 			total: object.total_entries,
 			total_pages: object.total_pages,
 			first_page: object.current_page === 1,
@@ -56,5 +56,22 @@ class ApplicationController < ActionController::API
 			out_of_bounds: object.out_of_bounds?,
 			offset: object.offset
 		}.to_json
+	end
+
+	def confirm_permission(permission)
+		roles = @req_user.roles
+		roles.each do |role|			
+			permissions = role.permissions.map do |permissionObj|
+				permissionObj.permission
+			end
+			return true if permissions.include?(permission)
+		end
+		render json: { message: 'You do not have permission to access this resource.' }, status: :forbidden
+		return false
+	end
+
+	# For application_spec.rb
+	def forbidden 
+		return if !confirm_permission('noOneShouldHaveThisPermission')
 	end
 end
