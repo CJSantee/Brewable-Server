@@ -2,6 +2,11 @@ class User < ApplicationRecord
 	has_secure_password 
 	has_many :bags
 
+	has_many :assignments
+	has_many :roles, through: :assignments
+	
+	has_many :permissions, through: :roles
+
 	# Will return an array of follows for the given user instance
 	has_many :received_follows, foreign_key: :followed_id, class_name: "Follow", dependent: :destroy
 	# Will return an array of users who follow the user instance

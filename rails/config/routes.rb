@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 	# For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 	get '/' => 'application#home'
+	get '/forbidden' => 'application#forbidden'
 	
 	namespace :api do 
 		namespace :v1 do 
@@ -14,6 +15,14 @@ Rails.application.routes.draw do
 				get '/mutual' => 'follows#mutual'
 				get '/followers' => 'follows#followers'
 				get '/following' => 'follows#following'
+				get '/roles' => 'roles#user_roles'
+				post '/roles' => 'roles#assign_roles'
+				get '/permissions' => 'permissions#user_permissions'
+			end
+
+			resources :roles, only: [:index, :create] do 
+				get '/users' => 'roles#users'
+				resources :permissions, only: [:index, :create]
 			end
 
 			resources :beans, only: [:index, :show, :create]

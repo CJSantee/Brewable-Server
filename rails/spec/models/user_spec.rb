@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe User, :type => :model do 
 	subject {
 		User.new(
-			first_name: "Colin",
-			last_name: "Santee",
-			email: "brewableapp@gmail.com",
+			first_name: "First",
+			last_name: "Last",
+			email: "thisisanemail@gmail.com",
 			phone: "",
 			password: "iLoveCoffee"
 		)

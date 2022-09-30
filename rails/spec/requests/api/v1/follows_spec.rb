@@ -3,13 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Api::V1::Follows', type: :request do
 	
 	before(:each) do 
-		@user = User.new(
-			first_name: 'Test',
-			last_name: 'User',
-			email: 'brewableapp@gmail.com',
-			password: 'iLoveCoffee',
-		)
-		@user.save
+		@user = User.find(1)
 		payload = { user_id: @user.id }
 		token = JWT.encode(payload, ENV['SECRET_KEY_BASE'] || Rails.application.secrets.secret_key_base)
 		cookies[:jwt] = token
