@@ -10,6 +10,11 @@ FactoryBot.define do
 		password { Faker::Internet.password(min_length: 8, max_length: 10) }
 	end
 
+	factory :post do 
+		user { FactoryBot.build(:user) }
+		caption { Faker::Lorem.paragraph(sentence_count: 2) }
+	end
+
 	factory :bean do
 		name { Faker::Lorem.characters(number: 10) }
 		roaster 
