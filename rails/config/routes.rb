@@ -10,6 +10,8 @@ Rails.application.routes.draw do
 			delete '/auth' => 'authentication#destroy'
 
 			resources :users, only: [:index, :show, :update, :create] do 
+				resources :posts, only: [:index, :show, :update, :create, :destroy] 
+				get '/feed' => 'posts#feed'
 				post '/follow' => 'follows#follow'
 				get '/follows' => 'follows#counts'
 				get '/mutual' => 'follows#mutual'
@@ -19,6 +21,8 @@ Rails.application.routes.draw do
 				post '/roles' => 'roles#assign_roles'
 				get '/permissions' => 'permissions#user_permissions'
 			end
+
+			get '/posts' => 'posts#discover'
 
 			resources :roles, only: [:index, :create] do 
 				get '/users' => 'roles#users'

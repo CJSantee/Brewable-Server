@@ -7,6 +7,8 @@ class User < ApplicationRecord
 	
 	has_many :permissions, through: :roles
 
+	has_many :posts
+
 	# Will return an array of follows for the given user instance
 	has_many :received_follows, foreign_key: :followed_id, class_name: "Follow", dependent: :destroy
 	# Will return an array of users who follow the user instance
