@@ -38,35 +38,22 @@ RSpec.describe 'Api::V1::Users', type: :request do
 			# Check response accuracy
 			expect(JSON.parse(response.body)['id']).to eq(user.id)
 			# Check response attributes
-			expect(JSON.parse(response.body)).to include('id', 'username', 'first_name', 'last_name', 'email', 'phone', 'followers_count', 'following_count', 'image')
+			expect(JSON.parse(response.body)).to include('id', 'username', 'name', 'email', 'phone', 'followers_count', 'following_count', 'image')
 		end
 	end
 
 	describe 'GET /users?query=' do 
-		it 'returns users when searching for first_name' do 
+		it 'returns users when searching for name' do 
 			user = FactoryBot.create(:user)
 
-			get "/api/v1/users?query=#{user.first_name}"
+			get "/api/v1/users?query=#{user.name}"
 
 			# Check response status
 			expect(response).to have_http_status(:success)
 			# Check response accuracy
 			expect(JSON.parse(response.body)[0]['id']).to eq(user.id)
 			# Check response attributes
-			expect(JSON.parse(response.body)[0]).to include('id', 'username', 'first_name', 'last_name', 'email', 'phone', 'followers_count', 'following_count', 'image')
-		end
-
-		it 'returns users when searching for last_name' do 
-			user = FactoryBot.create(:user)
-
-			get "/api/v1/users?query=#{user.last_name}"
-
-			# Check response status
-			expect(response).to have_http_status(:success)
-			# Check response accuracy
-			expect(JSON.parse(response.body)[0]['id']).to eq(user.id)
-			# Check response attributes
-			expect(JSON.parse(response.body)[0]).to include('id', 'username', 'first_name', 'last_name', 'email', 'phone', 'followers_count', 'following_count', 'image')
+			expect(JSON.parse(response.body)[0]).to include('id', 'username', 'name', 'email', 'phone', 'followers_count', 'following_count', 'image')
 		end
 
 		it 'returns users when searching for username' do 
@@ -79,7 +66,7 @@ RSpec.describe 'Api::V1::Users', type: :request do
 			# Check response accuracy
 			expect(JSON.parse(response.body)[0]['id']).to eq(user.id)
 			# Check response attributes
-			expect(JSON.parse(response.body)[0]).to include('id', 'username', 'first_name', 'last_name', 'email', 'phone', 'followers_count', 'following_count', 'image')
+			expect(JSON.parse(response.body)[0]).to include('id', 'username', 'name', 'email', 'phone', 'followers_count', 'following_count', 'image')
 		end
 	end
 
@@ -88,15 +75,14 @@ RSpec.describe 'Api::V1::Users', type: :request do
 
 			post '/api/v1/users', :params => {
 				:user => {
-					first_name: 'Colin',
-					last_name: 'Santee',
+					name: 'Colin Santee',
 					email: 'colinsantee@email.com',
 					password: 'iLoveCoffee',
 				}
 			}
 
 			expect(response).to have_http_status(:success)
-			expect(JSON.parse(response.body)['user']['first_name']).to eq('Colin')
+			expect(JSON.parse(response.body)['user']['name']).to eq('Colin Santee')
 		end
 	end
 
@@ -106,12 +92,12 @@ RSpec.describe 'Api::V1::Users', type: :request do
 
 			patch "/api/v1/users/#{user.id}", :params => {
 				:user => {
-					first_name: 'Colin',
+					name: 'Colin Santee',
 				}
 			}
 
 			expect(response).to have_http_status(:success)
-			expect(User.find(user.id)['first_name']).to eq('Colin')
+			expect(User.find(user.id)['name']).to eq('Colin Santee')
 		end
 
 		it 'updates user password with old password' do 

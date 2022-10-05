@@ -37,7 +37,7 @@ RSpec.describe 'Api::V1::Roles', type: :request do
 			expect(response).to have_http_status(:success)
 			body = JSON.parse(response.body)
 			expect(body.count).to eq(1)
-			expect(body[0]['first_name']).to eq(@test_user.first_name)
+			expect(body[0]['name']).to eq(@test_user.name)
 		end
 	end
 

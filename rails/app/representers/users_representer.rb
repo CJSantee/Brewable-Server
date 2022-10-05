@@ -1,20 +1,21 @@
 class UsersRepresenter
-	def initialize(users)
+	def initialize(users, req_user)
 		@users = users
+		@req_user = req_user
 	end
 
 	def as_json
-		users.map do |user|
+		@users.map do |user|
 			{
 				id: user.id,
 				username: user.username,
-				first_name: user.first_name,
-				last_name: user.last_name,
+				name: user.name,
 				email: user.email,
 				phone: user.phone,
 				followers_count: user.followers.count,
 				following_count: user.following.count,
-				image: user.image
+				image: user.image,
+				following: @req_user.following.include?(user),
 			}
 		end
 	end

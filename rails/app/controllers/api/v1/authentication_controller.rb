@@ -4,17 +4,17 @@ class Api::V1::AuthenticationController < ApplicationController
 	# GET /api/v1/auth 
 	# Login User
 	def create
-		@user = params[:email] ? User.find_by(email: params[:email].downcase) : User.find_by(phone: params[:phone])
-		if @user
-			if (@user.authenticate(params[:password]))
-				payload = { user_id: @user.id }
+		user = params[:email] ? User.find_by(email: params[:email].downcase) : User.find_by(phone: params[:phone])
+		if user
+			if (user.authenticate(params[:password]))
+				payload = { user_id: user.id }
 				secret = ENV['SECRET_KEY_BASE'] || Rails.application.secrets.secret_key_base
 				token = create_token(payload)
 				cookies[:jwt] = {
 					value: token,
 					httpOnly: true,
 				}
-				render json: { access_token: token, user: { user_id: @user.id, first_name: @user.first_name, last_name: @user.last_name }}
+				render json: { access_token: token, user: { user_id: user.id, username: user.username, name: user.name }}
 			else
 				render json: { message: "Authentication Failed" }, status: :unprocessable_entity
 			end
@@ -30,8 +30,8 @@ class Api::V1::AuthenticationController < ApplicationController
 				decoded_token = JWT.decode(token, secret)
 				payload = decoded_token.first
 				user_id = payload["user_id"]
-				@user = User.find(user_id)
-				if @user
+				user = User.find(user_id)
+				if user
 					payload = { user_id: @user.id }
 					token = create_token(payload)
 					cookies[:jwt] = {
@@ -39,7 +39,7 @@ class Api::V1::AuthenticationController < ApplicationController
 						httpOnly: true,
 						expires: 1.hour.from_now
 					}
-					render json: { access_token: token, user: { user_id: @user.id, first_name: @user.first_name, last_name: @user.last_name }}, status: :ok
+					render json: { access_token: token, user: { user_id: user.id, username: user.name, name: user.name }}, status: :ok
 				else
 					render json: { message: "User not found" }, status: :forbidden
 				end

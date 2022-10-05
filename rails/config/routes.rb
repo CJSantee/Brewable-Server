@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 				resources :posts, only: [:index, :show, :update, :create, :destroy] 
 				get '/feed' => 'posts#feed'
 				post '/follow' => 'follows#follow'
+				post '/unfollow' => 'follows#unfollow'
 				get '/follows' => 'follows#counts'
 				get '/mutual' => 'follows#mutual'
 				get '/followers' => 'follows#followers'
