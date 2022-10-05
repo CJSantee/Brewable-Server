@@ -8,6 +8,15 @@ class Api::V1::FollowsController < ApplicationController
 		render json: {follower_id: follower.id, followed_id: followed.id}, status: :created
 	end
 
+	# POST /api/v1/users/:id/unfollow
+	def unfollow
+		follower = User.find(params[:user_id])
+		followed = User.find(params[:followed_id])
+		follow = Follow.where(follower_id: follower.id, followed_id: followed.id).first
+		follow.destroy
+		render json: { message: 'Sucessfully unfollowed.' }, status: :ok
+	end
+
 	# GET /api/v1/users/:id/follows
 	def counts
 		user = User.find(params[:user_id])
@@ -37,7 +46,7 @@ class Api::V1::FollowsController < ApplicationController
 		# Can't paginate because not active record collection after above
 		# mutual = mutual.paginate(page: params[:page], per_page: limit) 
 
-		render json: UsersRepresenter.new(mutual).as_json, status: :ok
+		render json: UsersRepresenter.new(mutual, @req_user).as_json, status: :ok
 		# set_pagination_headers(mutual)
 	end
 
@@ -47,7 +56,7 @@ class Api::V1::FollowsController < ApplicationController
 
 		followed = User.find(params[:user_id])
 		followers = followed.followers.paginate(page: params[:page], per_page: limit)
-		render json: UsersRepresenter.new(followers).as_json, status: :ok
+		render json: UsersRepresenter.new(followers, @req_user).as_json, status: :ok
 		set_pagination_headers(followers)
 	end
 
@@ -57,7 +66,7 @@ class Api::V1::FollowsController < ApplicationController
 
 		follower = User.find(params[:user_id])
 		following = follower.following.paginate(page: params[:page], per_page: limit)
-		render json: UsersRepresenter.new(following).as_json, status: :ok
+		render json: UsersRepresenter.new(following, @req_user).as_json, status: :ok
 		set_pagination_headers(following)
 	end
 

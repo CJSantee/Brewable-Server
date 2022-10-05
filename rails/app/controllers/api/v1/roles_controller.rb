@@ -24,7 +24,7 @@ class Api::V1::RolesController < ApplicationController
 	def users
 		role = Role.find(params[:role_id])
 		users = role.users.paginate(page: params[:page], per_page: limit)
-		render json: UsersRepresenter.new(users).as_json, status: :ok
+		render json: UsersRepresenter.new(users, @req_user).as_json, status: :ok
 		set_pagination_headers(users)
 	end
 

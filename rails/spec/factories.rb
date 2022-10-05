@@ -5,8 +5,7 @@ FactoryBot.define do
 		username { Faker::Internet.username(specifier: 5..12) }
 		email { Faker::Internet.email }
 		phone { Faker::PhoneNumber.cell_phone_in_e164 }
-		first_name { Faker::Name.first_name }
-		last_name { Faker::Name.last_name }
+		name { Faker::Name.name }
 		password { Faker::Internet.password(min_length: 8, max_length: 10) }
 	end
 

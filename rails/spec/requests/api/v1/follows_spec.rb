@@ -123,4 +123,20 @@ RSpec.describe 'Api::V1::Follows', type: :request do
 		end
 	end
 
+	describe 'POST /users/:id/unfollow' do 
+		it 'unfollows followed_id from follower_id' do 
+			follower = FactoryBot.create(:user)
+			followed = FactoryBot.create(:user)
+			follower.given_follows.create!(followed_id: followed.id)
+
+			post "/api/v1/users/#{follower.id}/unfollow", :params => {
+				followed_id: followed.id,
+			}
+
+			# Check response status
+			expect(response).to have_http_status(:success)
+			expect(follower.following.count).to eq(0)
+		end
+	end
+
 end
