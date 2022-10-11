@@ -58,6 +58,14 @@ class ApplicationController < ActionController::API
 		}.to_json
 	end
 
+	def error_status(status)
+		if Rails.env.production? 
+			return :ok 
+		else
+			return status
+		end
+	end
+
 	def confirm_permission(permission)
 		roles = @req_user.roles
 		roles.each do |role|			

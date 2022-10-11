@@ -23,6 +23,7 @@ class User < ApplicationRecord
 	validates :phone, uniqueness: true, :allow_blank => true
 
 	scope :filter_by_query, -> (query) { where("lower(name) LIKE ?", "%#{query.downcase}%").or(where("username LIKE ?", "%#{query.downcase}%")) }
+	scope :filter_by_username, -> (username) { where("username LIKE ?", "%#{username.downcase}%") }
 
 	def image 
 		if image_uri && !ENV['RETURN_AWS_URLS']='false'

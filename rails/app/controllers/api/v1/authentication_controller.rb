@@ -14,12 +14,12 @@ class Api::V1::AuthenticationController < ApplicationController
 					value: token,
 					httpOnly: true,
 				}
-				render json: { access_token: token, user: { user_id: user.id, username: user.username, name: user.name }}
+				render json: { data: { access_token: token, user: { user_id: user.id, username: user.username, name: user.name }}}
 			else
-				render json: { message: "Authentication Failed" }, status: :unprocessable_entity
+				render json: { error: { code: "INVALID_CREDENTIALS", message: "Incorrect login or password." }}, status: error_status(:unauthorized)
 			end
 		else
-			render json: { message: "Could not find user" }, status: :unprocessable_entity
+			render json: { error: { code: "NOT_FOUND", message: "User not found." }}, status: :not_found
 		end
 	end
 
@@ -32,22 +32,22 @@ class Api::V1::AuthenticationController < ApplicationController
 				user_id = payload["user_id"]
 				user = User.find(user_id)
 				if user
-					payload = { user_id: @user.id }
+					payload = { user_id: user.id }
 					token = create_token(payload)
 					cookies[:jwt] = {
 						value: token,
 						httpOnly: true,
 						expires: 1.hour.from_now
 					}
-					render json: { access_token: token, user: { user_id: user.id, username: user.name, name: user.name }}, status: :ok
+					render json: { data: { access_token: token, user: { user_id: user.id, username: user.username, name: user.name }}}, status: :ok
 				else
-					render json: { message: "User not found" }, status: :forbidden
+					render json: { error: { message: "User not found" }}, status: :unauthorized
 				end
 			rescue => exception
-				render json: { message: "Error: #{exception}" }, status: :forbidden
+				render json: { error: { message: "Error: #{exception}" }}, status: :internal_server_error
 			end
 		else
-			render json: { message: "Token cookie not found" }, status: :forbidden
+			render json: { error: { message: "Token cookie not found" }}, status: :not_found
 		end
 	end
 

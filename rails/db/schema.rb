@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_04_232221) do
+ActiveRecord::Schema.define(version: 2022_10_11_015225) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,6 +94,10 @@ ActiveRecord::Schema.define(version: 2022_10_04_232221) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "image_uri"
     t.string "username"
+    t.datetime "archived_at"
+    t.boolean "is_private", default: false, null: false
+    t.string "bio"
+    t.string "time_zone", default: "America/New_York", null: false
   end
 
   add_foreign_key "assignments", "roles"

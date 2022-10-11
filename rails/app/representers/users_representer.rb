@@ -7,15 +7,19 @@ class UsersRepresenter
 	def as_json
 		@users.map do |user|
 			{
-				id: user.id,
+				user_id: user.id,
 				username: user.username,
 				name: user.name,
 				email: user.email,
 				phone: user.phone,
+				bio: user.bio,
 				followers_count: user.followers.count,
 				following_count: user.following.count,
 				image: user.image,
 				following: @req_user.following.include?(user),
+				roles: user.roles.map do |role|
+					role.name
+				end
 			}
 		end
 	end

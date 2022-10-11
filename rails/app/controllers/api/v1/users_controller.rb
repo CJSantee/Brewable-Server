@@ -6,8 +6,9 @@ class Api::V1::UsersController < ApplicationController
 		# return if !confirm_permission('users:get')
 		users = User.all
 		users = users.filter_by_query(params[:query]) if params[:query].present?
+		users = users.filter_by_username(params[:username]) if params[:username].present?
 		users = users.paginate(page: params[:page], per_page: limit)
-		render json: UsersRepresenter.new(users, @req_user).as_json, status: :ok
+		render json: {data: UsersRepresenter.new(users, @req_user).as_json}, status: :ok
 		set_pagination_headers(users)
 	end
 

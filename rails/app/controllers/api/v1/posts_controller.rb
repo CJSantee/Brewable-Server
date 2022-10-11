@@ -13,7 +13,7 @@ class Api::V1::PostsController < ApplicationController
 		user = User.find(params[:user_id])
 		posts = user.posts
 		posts = posts.paginate(page: params[:page], per_page: limit)
-		render json: posts, status: :ok
+		render json: { data: PostsRepresenter.new(posts, @req_user).as_json }, status: :ok
 		set_pagination_headers(posts)
 	end
 
