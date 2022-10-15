@@ -14,7 +14,7 @@ class Api::V1::AuthenticationController < ApplicationController
 					value: token,
 					httpOnly: true,
 				}
-				render json: { data: { access_token: token, user: { user_id: user.id, username: user.username, name: user.name }}}
+				render json: { access_token: token, user: { user_id: user.id, username: user.username, name: user.name }}
 			else
 				render json: { error: { code: "INVALID_CREDENTIALS", message: "Incorrect login or password." }}, status: error_status(:unauthorized)
 			end
@@ -39,7 +39,7 @@ class Api::V1::AuthenticationController < ApplicationController
 						httpOnly: true,
 						expires: 1.hour.from_now
 					}
-					render json: { data: { access_token: token, user: { user_id: user.id, username: user.username, name: user.name }}}, status: :ok
+					render json: { access_token: token, user: { user_id: user.id, username: user.username, name: user.name }}, status: :ok
 				else
 					render json: { error: { message: "User not found" }}, status: :unauthorized
 				end
