@@ -1,5 +1,6 @@
 class Api::V1::UsersController < ApplicationController
-	skip_before_action :authenticate, only: [:create]
+	before_action :authenticate, except: [:index, :create]
+	before_action :get_user, only: [:index]
 
 	# GET /api/v1/users
 	def index
@@ -28,10 +29,10 @@ class Api::V1::UsersController < ApplicationController
 				value: token,
 				httponly: true,
 			}
-			render json: { access_token: token, user: { user_id: user.id, name: user.name, username: user.username }}, status: :created
+			render json: { access_token: token, user: UsersRepresenter.new([user], user).for_auth }, status: :created
 		else
 			# TODO: Return 409 (:conflict) for email / phone already in use
-			render json: user.errors, status: :unprocessable_entity
+			render json: { error: user.errors }, status: error_status(:unprocessable_entity)
 		end
 	end
 
@@ -41,7 +42,7 @@ class Api::V1::UsersController < ApplicationController
 		if user.update(user_params)
 			render json: UsersRepresenter.new([User.find(user.id)], @req_user).as_json.first, status: :ok
 		else
-			render json: user.errors, status: :unprocessable_entity
+			render json: user.errors, status: error_status(:unprocessable_entity)
 		end
 	end
 

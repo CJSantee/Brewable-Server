@@ -2,11 +2,12 @@ FactoryBot.define do
 	Faker::Config.locale = 'en-US'
 
 	factory :user do 
-		username { Faker::Internet.username(specifier: 5..12) }
-		email { Faker::Internet.email }
-		phone { Faker::PhoneNumber.cell_phone_in_e164 }
+		username { Faker::Internet.unique.username(specifier: 5..12) }
+		email { Faker::Internet.unique.email }
+		phone { Faker::PhoneNumber.unique.cell_phone_in_e164 }
 		name { Faker::Name.name }
 		password { Faker::Internet.password(min_length: 8, max_length: 10) }
+		bio { "I love #{Faker::Hobby.activity}!" }
 	end
 
 	factory :post do 

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 	namespace :api do 
 		namespace :v1 do 
 			post '/auth' => 'authentication#create'
+			post '/backdoor' => 'authentication#backdoor'
 			get '/refresh' => 'authentication#refresh'
 			delete '/auth' => 'authentication#destroy'
 
@@ -24,6 +25,7 @@ Rails.application.routes.draw do
 			end
 
 			get '/posts' => 'posts#discover'
+			get '/posts/:post_uuid' => 'posts#find'
 
 			resources :roles, only: [:index, :create] do 
 				get '/users' => 'roles#users'

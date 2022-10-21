@@ -1,5 +1,4 @@
 class Api::V1::AuthenticationController < ApplicationController
-	skip_before_action :authenticate, only: [:create, :refresh]
 
 	# GET /api/v1/auth 
 	# Login User
@@ -14,7 +13,7 @@ class Api::V1::AuthenticationController < ApplicationController
 					value: token,
 					httpOnly: true,
 				}
-				render json: { access_token: token, user: { user_id: user.id, username: user.username, name: user.name }}
+				render json: { access_token: token, user: UsersRepresenter.new([user], user).for_auth }
 			else
 				render json: { error: { code: "INVALID_CREDENTIALS", message: "Incorrect login or password." }}, status: error_status(:unauthorized)
 			end
@@ -23,6 +22,25 @@ class Api::V1::AuthenticationController < ApplicationController
 		end
 	end
 
+	# GET /api/v1/backdoor
+	# TODO: must be signed in as admin!
+	def backdoor 
+		user = User.find(params[:user_id])
+		if user
+			payload = { user_id: user.id }
+			secret = ENV['SECRET_KEY_BASE'] || Rails.application.secrets.secret_key_base
+			token = create_token(payload)
+			cookies[:jwt] = {
+				value: token,
+				httpOnly: true,
+			}
+			render json: { access_token: token, user: UsersRepresenter.new([user], user).for_auth }
+		else
+			render json: { error: { code: "NOT_FOUND", message: "User not found." }}, status: :not_found
+		end
+	end
+
+	# GET /api/v1/refresh
 	def refresh
 		token = cookies[:jwt]
 		if token 
@@ -37,9 +55,8 @@ class Api::V1::AuthenticationController < ApplicationController
 					cookies[:jwt] = {
 						value: token,
 						httpOnly: true,
-						expires: 1.hour.from_now
 					}
-					render json: { access_token: token, user: { user_id: user.id, username: user.username, name: user.name }}, status: :ok
+					render json: { access_token: token, user: UsersRepresenter.new([user], user).for_auth }, status: :ok
 				else
 					render json: { error: { message: "User not found" }}, status: :unauthorized
 				end
@@ -55,6 +72,7 @@ class Api::V1::AuthenticationController < ApplicationController
 	# Logout User
 	def destroy
 		cookies.delete(:jwt)
+		render json: { message: "Successfully logged out!" }
 	end
 
 end

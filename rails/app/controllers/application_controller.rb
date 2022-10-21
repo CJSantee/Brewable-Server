@@ -1,8 +1,6 @@
 class ApplicationController < ActionController::API
 	include ::ActionController::Cookies
-	before_action :authenticate
 	before_action :set_cors
-	skip_before_action :authenticate, only: [:home]
 
 	MAX_PAGINATION_LIMIT = 100
 
@@ -22,6 +20,15 @@ class ApplicationController < ActionController::API
 			end
 		else
 			render json: { message: 'Token cookie not found' }, status: :forbidden
+		end
+	end
+
+	def get_user
+		token = cookies[:jwt]
+		if token 
+			decoded = JWT.decode(token, secret)[0]
+			user_id = decoded["user_id"]
+			@req_user = User.find(user_id)
 		end
 	end
 

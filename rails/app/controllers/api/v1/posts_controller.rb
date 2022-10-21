@@ -1,5 +1,6 @@
 class Api::V1::PostsController < ApplicationController
-	
+	before_action :authenticate, only: [:create, :update, :destroy]
+
 	# GET /api/v1/posts
 	def discover
 		posts = Post.all
@@ -27,10 +28,16 @@ class Api::V1::PostsController < ApplicationController
 		set_pagination_headers(posts)
 	end
 
-	# GET /api/v1/users/:id/posts/:id
+	# GET /api/v1/users/:id/posts/:id|post_uuid
 	def show
 		post = Post.find(params[:id])
 		render json: post, status: :ok
+	end
+
+	# GET /api/v1/posts/:post_uuid
+	def find 
+		post = Post.find_by(post_uuid: params[:post_uuid])
+		render json: PostsRepresenter.new([post], @req_user).as_json.first, status: :ok
 	end
 
 	# POST /api/v1/users/:id/posts

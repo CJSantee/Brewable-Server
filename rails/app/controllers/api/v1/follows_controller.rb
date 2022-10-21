@@ -1,7 +1,13 @@
 class Api::V1::FollowsController < ApplicationController
+	before_action :authenticate, except: [:follow, :unfollow]
+	before_action :get_user, only: [:followers, :following]
 
 	# POST /api/v1/users/:id/follow => {followed_id: <followed_id>}
 	def follow
+		if params[:user_id] == params[:followed_id]
+			render json: { error: "Cannot follow yourself." } 
+			return
+		end
 		follower = User.find(params[:user_id])
 		followed = User.find(params[:followed_id])
 		follower.given_follows.create!(followed_id: followed.id)
