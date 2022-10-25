@@ -71,7 +71,7 @@ RSpec.describe 'Api::V1::Roles', type: :request do
 		it 'Assignes one or more roles to user :id' do 
 			@new_role = Role.create(name: 'test')
 			post "/api/v1/users/#{@test_user.id}/roles", :params => {
-				:roles => [@new_role.id]
+				:roles => ['test']
 			}
 
 			expect(response).to have_http_status(:success)

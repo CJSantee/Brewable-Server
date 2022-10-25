@@ -34,7 +34,7 @@ RSpec.describe 'Api::V1::Posts', type: :request do
  	end
 
 	describe 'GET /api/v1/users/:id/posts/:id' do 
-		it 'Gets a specific posts' do 
+		it 'Gets a specific post' do 
 			post = FactoryBot.create(:post)
 
 			get "/api/v1/users/#{post.user.id}/posts/#{post.id}"

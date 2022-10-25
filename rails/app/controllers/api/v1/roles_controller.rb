@@ -39,11 +39,14 @@ class Api::V1::RolesController < ApplicationController
 		end
 	end
 
+	# POST /api/v1/users/:id/roles
+	# Assign roles to user
 	def assign_roles
 		user = User.find(params[:user_id])
-		role_ids = params[:roles]
-		role_ids.each do |id|
-			Assignment.create(user_id: user.id, role_id: id)
+		roles = params[:roles]
+		roles.each do |name|
+			role = Role.find_by(name: name)
+			Assignment.create(user_id: user.id, role_id: role.id)
 		end
 		
 		render json: { message: 'Roles successfully assigned.' }, status: :ok

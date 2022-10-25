@@ -16,9 +16,7 @@ class Post < ApplicationRecord
 			letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 			uuid = ""
 			for idx in 1..10 
-				letter_idx = rand(52)
-				letter = LETTERS[letter_idx]
-				uuid += letter
+				uuid += letters[rand(52)]
 			end
 			return uuid
 		end

@@ -10,7 +10,7 @@
 admin_role = Role.create(name: 'admin')
 
 # Create User for Colin and Assign to Admin
-user = User.create(name: 'Test User', username: 'brewable' email: 'brewableapp@gmail.com', password: 'iLoveCoffee')
+user = User.create(name: 'Test User', username: 'brewable', email: 'brewableapp@gmail.com', password: 'iLoveCoffee')
 Assignment.create(user_id: user.id, role_id: admin_role.id)
 
 Permission.create(role_id: admin_role.id, permission: 'users:get')

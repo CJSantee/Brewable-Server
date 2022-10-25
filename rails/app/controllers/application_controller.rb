@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::API
 	include ::ActionController::Cookies
 	before_action :set_cors
+	before_action :get_user, only: [:forbidden]
 
 	MAX_PAGINATION_LIMIT = 100
 
@@ -71,6 +72,15 @@ class ApplicationController < ActionController::API
 		else
 			return status
 		end
+	end
+
+	def confirm_role(role)
+		roles = @req_user.roles.map do |roleObj|
+			roleObj.name
+		end
+		return true if roles.include?(role)
+		render json: { message: 'You do not have permission to access this resource.' }, status: :forbidden
+		return false
 	end
 
 	def confirm_permission(permission)

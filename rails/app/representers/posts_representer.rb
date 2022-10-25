@@ -7,7 +7,7 @@ class PostsRepresenter
 	end
 
 	def as_json 
-		@posts.select{ |post| archived(post) }.map do |post|
+		@posts.select{ |post| !archived(post) }.map do |post|
 			user = User.find(post.user_id)
 			{
 				post_id: post.id,
@@ -19,6 +19,7 @@ class PostsRepresenter
 				created_at: created_at(post),
 				display_time: time_since(post.created_at),
 				edited: post.created_at != post.updated_at,
+				archived_at: post.archived_at,
 			}
 		end
 	end

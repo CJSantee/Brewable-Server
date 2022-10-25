@@ -1,11 +1,12 @@
 class Api::V1::PostsController < ApplicationController
 	before_action :authenticate, only: [:create, :update, :destroy]
+	before_action :get_user, only: [:discover, :index, :find]
 
 	# GET /api/v1/posts
 	def discover
 		posts = Post.all
 		posts = posts.paginate(page: params[:page], per_page: limit)
-		render json: posts, status: :ok
+		render json: PostsRepresenter.new(posts, @req_user).as_json, status: :ok
 		set_pagination_headers(posts)
 	end
 
@@ -28,7 +29,7 @@ class Api::V1::PostsController < ApplicationController
 		set_pagination_headers(posts)
 	end
 
-	# GET /api/v1/users/:id/posts/:id|post_uuid
+	# GET /api/v1/users/:id/posts/:id
 	def show
 		post = Post.find(params[:id])
 		render json: post, status: :ok
@@ -62,6 +63,9 @@ class Api::V1::PostsController < ApplicationController
 
 	# DELETE /api/v1/users/:id/posts/:id
 	def destroy 
+		if (@req_user.id != params[:id])
+			return if !confirm_role('admin')
+		end
 		post = Post.find(params[:id])
 		if post.update(archived_at: DateTime.now)
 			render json: post.to_json
