@@ -15,6 +15,11 @@ FactoryBot.define do
 		caption { Faker::Lorem.paragraph(sentence_count: 2) }
 	end
 
+	factory :like do 
+		post { FactoryBot.build(:post) }
+		user { FactoryBot.build(:user) }
+	end
+
 	factory :bean do
 		name { Faker::Lorem.characters(number: 10) }
 		roaster 

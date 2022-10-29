@@ -36,9 +36,9 @@ RSpec.describe 'Api::V1::Users', type: :request do
 			# Check response status
 			expect(response).to have_http_status(:success)
 			# Check response accuracy
-			expect(JSON.parse(response.body)['id']).to eq(user.id)
+			expect(JSON.parse(response.body)['user_id']).to eq(user.id)
 			# Check response attributes
-			expect(JSON.parse(response.body)).to include('id', 'username', 'name', 'email', 'phone', 'followers_count', 'following_count', 'image')
+			expect(JSON.parse(response.body)).to include('user_id', 'username', 'name', 'email', 'phone', 'followers_count', 'following_count', 'image')
 		end
 	end
 
@@ -51,9 +51,9 @@ RSpec.describe 'Api::V1::Users', type: :request do
 			# Check response status
 			expect(response).to have_http_status(:success)
 			# Check response accuracy
-			expect(JSON.parse(response.body)[0]['id']).to eq(user.id)
+			expect(JSON.parse(response.body)[0]['user_id']).to eq(user.id)
 			# Check response attributes
-			expect(JSON.parse(response.body)[0]).to include('id', 'username', 'name', 'email', 'phone', 'followers_count', 'following_count', 'image')
+			expect(JSON.parse(response.body)[0]).to include('user_id', 'username', 'name', 'email', 'phone', 'followers_count', 'following_count', 'image')
 		end
 
 		it 'returns users when searching for username' do 
@@ -64,9 +64,9 @@ RSpec.describe 'Api::V1::Users', type: :request do
 			# Check response status
 			expect(response).to have_http_status(:success)
 			# Check response accuracy
-			expect(JSON.parse(response.body)[0]['id']).to eq(user.id)
+			expect(JSON.parse(response.body)[0]['user_id']).to eq(user.id)
 			# Check response attributes
-			expect(JSON.parse(response.body)[0]).to include('id', 'username', 'name', 'email', 'phone', 'followers_count', 'following_count', 'image')
+			expect(JSON.parse(response.body)[0]).to include('user_id', 'username', 'name', 'email', 'phone', 'followers_count', 'following_count', 'image')
 		end
 	end
 
