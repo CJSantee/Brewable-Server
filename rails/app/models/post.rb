@@ -1,8 +1,9 @@
 class Post < ApplicationRecord
 	belongs_to :user
+	has_many :likes
+	has_many :likers, through: :likes, source: :user
 
 	validates :post_uuid, uniqueness: true
-
   before_validation :add_uuid
 
   private

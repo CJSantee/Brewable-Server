@@ -27,6 +27,11 @@ Rails.application.routes.draw do
 			get '/posts' => 'posts#discover'
 			get '/posts/:post_uuid' => 'posts#find'
 
+			resources :posts do 
+				resources :likes, only: [:index, :create]
+				delete '/likes' => 'likes#destroy' # HACK because not using like_id
+			end
+			
 			resources :roles, only: [:index, :create] do 
 				get '/users' => 'roles#users'
 				resources :permissions, only: [:index, :create]
